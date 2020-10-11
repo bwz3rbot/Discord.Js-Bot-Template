@@ -1,0 +1,3 @@
+TOKEN=''
+CHANNEL_NAME="general-chat"
+COMMAND_PREFIX="!"
