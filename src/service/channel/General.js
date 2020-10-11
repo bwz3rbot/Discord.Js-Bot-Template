@@ -15,10 +15,12 @@ const channelCommands = function (command, message, client) {
     console.dir(command)
     switch (command.directive) {
         case "ping":
-            console.log("command was ping")
+            console.log("command was ping");
+            console.log("args were: ", command.args);
             break;
         case "hello":
-            console.log("was command hello")
+            console.log("was command hello");
+            console.log("args were: ", command.args);
             break;
         default:
             console.log("command was not understood...")

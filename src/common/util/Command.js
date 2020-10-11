@@ -1,5 +1,5 @@
 // Checks that command starts with the prefix as defined in the pw.env file
-const pre = process.env.COMMAND_PREFIX
+const pre = process.env.COMMAND_PREFIX || "!";
 const prefix = function (str) {
     if (str.startsWith(pre)) {
         return true

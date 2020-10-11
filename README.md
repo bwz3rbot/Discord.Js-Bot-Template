@@ -84,10 +84,32 @@ Give it the name of the channel it's going to be working on.\
 Export a single function which must be named 'on'.
 
 ```
-const CH_NAME = "my-channel"
-const on = function(msg,client){
-    if (!(msg.author === client.user) && msg.channel.name === CH_NAME) {
-        // process the message with client object.
+const cmd = require('../../common/util/Command').command;
+
+const on = function (message, client) {
+    if (!(message.author === client.user) &&
+        message.channel.name === process.env.CHANNEL_NAME) {
+        const newCommand = cmd(message.content);
+        newCommand ?
+            channelCommands(newCommand, message, client) :
+            false;
+    }
+}
+
+const channelCommands = function (command, message, client) {
+    console.dir(command)
+    switch (command.directive) {
+        case "ping":
+            console.log("command was ping");
+            console.log("args were: ", command.args);
+            break;
+        case "hello":
+            console.log("was command hello");
+            console.log("args were: ", command.args);
+            break;
+        default:
+            console.log("command was not understood...")
+            break;
     }
 }
 
@@ -95,7 +117,13 @@ exports.on = on
 ```
 
 Each time an on('message') event is fired, the bot will call your on() function and will pass it the message, and the client.\
-All the logic to handle requests will be handled within this function.
+The if statement will check for:
+1. The message was NOT sent from the bot itself
+2. The message was sent from the corresponding channel (can be user defined within pw.env or assigned programmatically)
+3. The message was a command (prefix is defiend in pw.env file, defaults to "!")
+
+If all conditions are met, a command with args is built.\
+The bot will run over all the command names you define in channelCommands.
 
 
 Each time you create a new bot channel, it must be registered in the 'channel/_channel-list.js' file.\
